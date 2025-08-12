@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, #3498db, #8e44ad);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input {
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 12px;
+      background: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #732d91;
+    }
+    .link {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .link a {
+      color: #8e44ad;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form action="/signup" method="POST">
+      <input type="text" id="full" name="fullname" placeholder="Full Name" required />
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="password" id="pass" name="password" placeholder="Password" required />
+      <input type="password" id="confirm" name="confirm_password" placeholder="Confirm Password" required />
+      <button>Create Account</button>
+    </form>
+    <div class="link">
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </div>
+  <script>
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const fullName = document.querySelector("#full").value;
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#pass").value;
+    const confirmPassword = document.querySelector("#confirm").value;
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const user = {
+      Name: fullName,
+      Email: email,
+      Password: password
+    };
+
+    fetch("http://localhost:3000/User", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+    .then((res) => {
+      if (res.ok) {
+        alert("Form submitted successfully");
+        form.reset();
+        window.location.href = "index.html";
+      } else {
+        alert("Failed to submit form");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Something went wrong");
+    });
+  });
+  </script>
+</body>
+</html>
